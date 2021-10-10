@@ -16,9 +16,13 @@ import lombok.ToString;
 public class IsolatedMarginApplyLoanRequest {
 
   private String symbol;
-
+  /**
+   * 	币种
+   */
   private String currency;
-
+  /**
+   * 借币数量（精度：3位小数）
+   */
   private BigDecimal amount;
 
 }

@@ -47,7 +47,22 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     this.restConnection = new HuobiRestConnection(options);
   }
 
-
+  /**
+   * 资产划转（逐仓）
+   * API Key 权限：交易
+   * 限频值（NEW）：2次/2s
+   *
+   * 此接口用于现货账户与逐仓杠杆账户的资产互转。
+   *
+   * 从现货账户划转至逐仓杠杆账户 transfer-in，从逐仓杠杆账户划转至现货账户 transfer-out
+   *
+   * HTTP 请求
+   * POST /v1/dw/transfer-in/margin
+   *
+   * POST /v1/dw/transfer-out/margin
+   * @param request
+   * @return Transfer id
+   */
   @Override
   public Long transfer(IsolatedMarginTransferRequest request) {
 
@@ -73,6 +88,11 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     return jsonObject.getLong("data");
   }
 
+  /**
+   *
+   * @param request
+   * @return 订单id
+   */
   @Override
   public Long applyLoan(IsolatedMarginApplyLoanRequest request) {
 
@@ -90,6 +110,15 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     return jsonObject.getLong("data");
   }
 
+  /**
+   * 归还借币（逐仓）
+   * API Key 权限：交易
+   * 限频值（NEW）：2次/2s
+   *
+   * 此接口用于归还借币.
+   * @param request
+   * @return Margin order id
+   */
   @Override
   public Long repayLoan(IsolatedMarginRepayLoanRequest request) {
 
@@ -105,6 +134,15 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     return jsonObject.getLong("data");
   }
 
+  /**
+   * 查询借币订单（逐仓）
+   * API Key 权限：读取
+   * 限频值（NEW）：100次/2s
+   *
+   * 此接口基于指定搜索条件返回借币订单。
+   * @param request
+   * @return
+   */
   @Override
   public List<IsolatedMarginLoadOrder> getLoanOrders(IsolatedMarginLoanOrdersRequest request) {
 
@@ -125,6 +163,15 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     return new IsolatedMarginLoadOrderParser().parseArray(data);
   }
 
+  /**
+   * 借币账户详情（逐仓）
+   * API Key 权限：读取
+   * 限频值（NEW）：100次/2s
+   *
+   * 此接口返回借币账户详情。
+   * @param request
+   * @return
+   */
   @Override
   public List<IsolatedMarginAccount> getLoanBalance(IsolatedMarginAccountRequest request) {
 
@@ -137,6 +184,15 @@ public class HuobiIsolatedMarginService implements IsolatedMarginClient {
     return new IsolatedMarginAccountParser().parseArray(data);
   }
 
+  /**
+   * 查询借币币息率及额度（逐仓）
+   * API Key 权限：读取
+   * 限频值（NEW）：20次/2s
+   *
+   * 此接口返回用户级别的借币币息率及借币额度。
+   * @param request
+   * @return
+   */
   @Override
   public List<IsolatedMarginSymbolInfo> getLoanInfo(IsolatedMarginLoanInfoRequest request) {
     UrlParamsBuilder builder = UrlParamsBuilder.build()

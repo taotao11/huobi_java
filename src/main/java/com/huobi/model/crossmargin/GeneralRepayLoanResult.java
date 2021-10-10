@@ -13,8 +13,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class GeneralRepayLoanResult {
-
+    /**
+     * 还币交易ID
+     */
     private String repayId;
-
+    /**
+     * 还币交易时间（unix time in millisecond）
+     */
     private long repayTime;
 }

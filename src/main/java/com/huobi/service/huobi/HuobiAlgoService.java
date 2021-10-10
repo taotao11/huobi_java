@@ -42,7 +42,15 @@ public class HuobiAlgoService implements AlgoClient {
     this.restConnection = new HuobiRestConnection(options);
   }
 
-
+  /**
+   * 策略委托下单
+   * POST /v2/algo-orders
+   * API Key 权限：交易
+   * 限频值（NEW）：20次/2秒
+   * 仅可通过此节点下单策略委托，不可通过现货/杠杆交易相关接口下单策略委托，支持未触发OPEN订单最大数量为100。
+   * @param request
+   * @return clientOrderId	string	TRUE	用户自编订单号
+   */
   @Override
   public CreateAlgoOrderResult createAlgoOrder(CreateAlgoOrderRequest request) {
 
@@ -78,6 +86,17 @@ public class HuobiAlgoService implements AlgoClient {
     return new CreateAlgoOrderResultParser().parse(jsonObject.getJSONObject("data"));
   }
 
+  /**
+   * 策略委托（触发前）撤单
+   * POST /v2/algo-orders/cancellation
+   * API Key 权限：交易
+   * 限频值（NEW）：20次/2秒
+   * 单次请求最多批量撤销50张订单
+   * 如需撤销已成功触发的订单，须通过现货/杠杆交易相关接口完成
+   * 如需撤销未触发的订单，仅可通过此节点撤销，不可通过现货/杠杆交易相关接口撤销
+   * @param request 用户自编订单号（可多填，以数组的形式传输）
+   * @return
+   */
   @Override
   public CancelAlgoOrderResult cancelAlgoOrder(CancelAlgoOrderRequest request) {
 
@@ -91,6 +110,17 @@ public class HuobiAlgoService implements AlgoClient {
     return new CancelAlgoOrderResultParser().parse(data);
   }
 
+  /**
+   * 查询未触发OPEN策略委托
+   * GET /v2/algo-orders/opening
+   * API Key 权限：读取
+   * 限频值（NEW）：20次/2秒
+   * 以orderOrigTime检索
+   * 未触发OPEN订单，指的是已成功下单，但尚未触发，订单状态orderStatus为created的订单
+   * 未触发OPEN订单，可通过此节点查询，但不可通过现货/杠杆交易相关接口查询
+   * @param request
+   * @return
+   */
   @Override
   public GetOpenAlgoOrdersResult getOpenAlgoOrders(GetOpenAlgoOrdersRequest request) {
 
@@ -107,6 +137,18 @@ public class HuobiAlgoService implements AlgoClient {
     return new GetOpenAlgoOrdersResultParser().parse(jsonObject);
   }
 
+  /**
+   * 查询策略委托历史
+   * GET /v2/algo-orders/history
+   * API Key 权限：读取
+   * 限频值（NEW）：20次/2秒
+   * 以orderOrigTime检索
+   * 历史终态订单包括，触发前被主动撤销的策略委托（orderStatus=canceled），触发失败的策略委托（orderStatus=rejected），触发成功的策略委托（orderStatus=triggered）。
+   * 如需查询已成功触发订单的后续状态，须通过现货/杠杆交易相关接口完成
+   * 触发前被主动撤销的策略委托及触发失败的策略委托，可通过此节点查询，但不可通过现货/杠杆交易相关接口查询
+   * @param request
+   * @return
+   */
   @Override
   public GetHistoryAlgoOrdersResult getHistoryAlgoOrders(GetHistoryAlgoOrdersRequest request) {
 
@@ -131,6 +173,11 @@ public class HuobiAlgoService implements AlgoClient {
     return new GetHistoryAlgoOrdersResultParser().parse(jsonObject);
   }
 
+  /**
+   *
+   * @param clientOrderId clientOrderId
+   * @return
+   */
   @Override
   public AlgoOrder getAlgoOrdersSpecific(String clientOrderId) {
 

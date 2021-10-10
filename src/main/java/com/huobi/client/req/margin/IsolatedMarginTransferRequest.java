@@ -18,11 +18,17 @@ import com.huobi.constant.enums.MarginTransferDirectionEnum;
 public class IsolatedMarginTransferRequest {
 
   private MarginTransferDirectionEnum direction;
-
+  /**
+   * 交易对, e.g. btcusdt, ethbtc
+   */
   private String symbol;
-
+  /**
+   * 币种
+   */
   private String currency;
-
+  /**
+   * 划转数量
+   */
   private BigDecimal amount;
 
 }

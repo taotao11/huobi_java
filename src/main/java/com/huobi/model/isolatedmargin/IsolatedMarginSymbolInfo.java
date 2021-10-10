@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IsolatedMarginSymbolInfo {
-
+  /**
+   * 	交易代码
+   */
   private String symbol;
 
   private List<IsolatedMarginCurrencyInfo> currencies;

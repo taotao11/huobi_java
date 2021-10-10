@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelAlgoOrderRequest {
-
+  /**
+   * 用户自编订单号（可多填，以数组的形式传输）
+   */
   private List<String> clientOrderIds;
 
 }

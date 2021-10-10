@@ -52,6 +52,18 @@ public class HuobiCrossMarginService implements CrossMarginClient {
         this.restConnection = new HuobiRestConnection(options);
     }
 
+    /**
+     * 资产划转（全仓）
+     * API Key 权限：交易
+     *
+     * 限频值（NEW）：10次/s
+     *
+     * 此接口用于现货账户与全仓杠杆账户的资产互转。
+     *
+     * 从现货账户划转至全仓杠杆账户 transfer-in，从全仓杠杆账户划转至现货账户 transfer-out
+     * @param request
+     * @return Transfer id
+     */
     @Override
     public Long transfer(CrossMarginTransferRequest request) {
 
@@ -127,12 +139,36 @@ public class HuobiCrossMarginService implements CrossMarginClient {
         return new CrossMarginAccountParser().parse(data);
     }
 
+    /**
+     * 查询借币币息率及额度（全仓）
+     * API Key 权限：读取
+     *
+     * 限频值（NEW）：2次/2s
+     *
+     * 此接口返回用户级别的借币币息率及借币额度。
+     *
+     * HTTP 请求
+     * GET /v1/cross-margin/loan-info
+     * @return
+     */
     public List<CrossMarginCurrencyInfo> getLoanInfo() {
         JSONObject jsonObject = restConnection.executeGetWithSignature(GET_LOAN_INFO_PATH, UrlParamsBuilder.build());
         JSONArray data = jsonObject.getJSONArray("data");
         return new CrossMarginCurrencyInfoParser().parseArray(data);
     }
 
+    /**
+     * 归还借币（全仓逐仓通用）
+     * API Key 权限：交易
+     *
+     * 限频值：2次/秒
+     *
+     * 子用户可以调用
+     *
+     * 还币顺序为，（如不指定transactId）先借先还，利息先还；如指定transactId时，currency参数不做校验。
+     * @param request
+     * @return
+     */
     @Override
     public List<GeneralRepayLoanResult> repayLoan(GeneralRepayLoanRequest request) {
         InputChecker.checker()

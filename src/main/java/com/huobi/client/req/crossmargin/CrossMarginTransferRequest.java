@@ -18,9 +18,13 @@ import com.huobi.constant.enums.MarginTransferDirectionEnum;
 public class CrossMarginTransferRequest {
 
   private MarginTransferDirectionEnum direction;
-
+  /**
+   * 币种
+   */
   private String currency;
-
+  /**
+   * 划转数量
+   */
   private BigDecimal amount;
 
 }

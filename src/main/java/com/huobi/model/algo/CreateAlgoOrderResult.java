@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAlgoOrderResult {
-
+  /**
+   * 用户自编订单号
+   */
   private String clientOrderId;
 
 }
